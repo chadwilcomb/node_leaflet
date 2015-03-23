@@ -5,11 +5,20 @@ var router = express.Router();
 // Mongoose import
 var mongoose = require('mongoose');
 
+var seeder = require('../app/seeder');
+
 // Mongoose connection to MongoDB
 mongoose.connect('mongodb://localhost:27017/node_leaflet', function (error) {
     if (error) {
         console.log(error);
     }
+});
+
+mongoose.connection.on('open', function() {
+    console.log("Connected to Mongoose...");
+
+    // check if the db is empty, if so seed it with some contacts:
+    seeder.check();
 });
 
 // Mongoose Schema definition
@@ -54,10 +63,5 @@ router.get('/map', function(req,res) {
         });
     });
 });
-
-module.exports = router;
-
-
-
 
 module.exports = router;
